@@ -43,7 +43,7 @@ Each step itself is including a lambda function, which can be like
 ```
 void canTest() {
   test(t -> {
-    R[] arrangement = Arrange(e -> {0,1});
+    R[] arrangement = arrange(e -> {0,1});
     
     R act = act(e -> methodToTest(arrangement[0],arrangement[1]));
     
