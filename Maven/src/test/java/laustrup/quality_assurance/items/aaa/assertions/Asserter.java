@@ -24,10 +24,13 @@ import laustrup.utilities.parameters.Plato;
 
 import javax.lang.model.element.UnknownElementException;
 
-import static laustrup.quality_assurance.items.aaa.assertions.AssertionActor.assertFor;
-
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Will do assertions, mostly specified for Bandwich objects
+ * @param <T> The input type.
+ * @param <R> The return type.
+ */
 public abstract class Asserter<T,R> extends Actor<T,R> {
 
     /**

@@ -4,7 +4,12 @@ import laustrup.utilities.console.Printer;
 
 import java.util.function.Function;
 
-/** Is used for acting of tests. Will also print the performances of arrangement and act after an act. */
+/**
+ * Is used for acting of tests. Will also print the performances of arrangement and act after an act,
+ * also saves the print of the action.
+ * @param <T> The input type.
+ * @param <R> The return type.
+ */
 public abstract class Actor<T,R> extends Arranger<T,R> {
 
     /** The performance of an act that has been calculated. */

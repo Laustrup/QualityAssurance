@@ -505,7 +505,7 @@ public class TestItems extends Tester<Object, Object> {
     }
 
     @Test
-    public void itemTest() {
+    void itemTest() {
         test(t -> {
             try {
                 act(e -> {
@@ -520,7 +520,7 @@ public class TestItems extends Tester<Object, Object> {
                 failing("Items could not be reset...", e);
             }
 
-            return true;
+            return end("itemTest");
         });
     }
 }

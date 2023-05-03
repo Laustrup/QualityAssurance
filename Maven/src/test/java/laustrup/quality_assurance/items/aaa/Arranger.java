@@ -2,7 +2,12 @@ package laustrup.quality_assurance.items.aaa;
 
 import java.util.function.Function;
 
-/** Will arrange a setup of a test and calculate its performance */
+/**
+ * Will arrange a setup of a test and calculate its performance,
+ * also saves a print of the arrangement.
+ * @param <T> The input type.
+ * @param <R> The return type.
+ */
 public abstract class Arranger<T,R> extends TestCalculator {
 
     /** The time the arrangement has performed */

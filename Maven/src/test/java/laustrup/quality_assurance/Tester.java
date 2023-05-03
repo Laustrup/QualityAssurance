@@ -14,11 +14,20 @@ import java.util.function.Function;
 import static laustrup.quality_assurance.items.aaa.assertions.AssertionFailer.failing;
 
 /**
- * Adds a few functions to test methods to reuse.
+ * Adds the test method, that will log each action of the test into print.
+ * Extends ARRANGER, ACTOR and ASSERTER.
+ * Includes a random generated password, that will be random generated beforeEach,
+ * along with other attributes such as expected, a random and other.
+ * @param <T> The input type.
+ * @param <R> The return type.
  */
 public abstract class Tester<T,R> extends Asserter<T,R> {
 
-
+    /**
+     * In case testItems should create items beforeEach, this should be true.
+     * If this project isn't a Bandwich project, it is recommended to be false.
+     */
+    private boolean _createTestItems = true;
     /** The object that is to be expected to be asserted as the same as the actual. */
     protected Object _expected;
 
@@ -54,7 +63,8 @@ public abstract class Tester<T,R> extends Asserter<T,R> {
 
     /**
      * Can be used for testing with multiple adds.
-     * Contains two Artists.
+     * Contains three Artists if it is meant for Bandwich project,
+     * otherwise it will be three unique numbers.
      */
     protected Object[] _addings;
 
@@ -64,28 +74,65 @@ public abstract class Tester<T,R> extends Asserter<T,R> {
      */
     protected Object _adding;
 
+    /** Default constructor, will generate testItems. */
+    protected Tester() {}
+
+    /**
+     * Custom constructor, that only will construct Bandwich testItems, if input is true.
+     * Is only recommended, if the project is using Bandwich models.
+     * @param createTestItems Will generate testItem for each beforeEach.
+     */
+    protected Tester(boolean createTestItems) {
+        _createTestItems = createTestItems;
+    }
+
+    /**
+     * Custom constructor, that only will construct Bandwich testItems, if input is true.
+     * Is only recommended, if the project is using Bandwich models.
+     * @param createTestItems Will generate testItem for each beforeEach.
+     * @param adding The adding that will be reused for tests.
+     */
+    protected Tester(boolean createTestItems, Object adding) {
+        _createTestItems = createTestItems;
+        _adding = adding;
+    }
+
     @BeforeEach
     void beforeEach() {
-        _items = new TestItems();
+        _password = RandomCreatorService.get_instance().generatePassword();
         _expected = new String();
         _actual = new String();
-        _password = RandomCreatorService.get_instance().generatePassword();
 
         _addings = new Object[3];
         Liszt<Integer> indexes = new Liszt<>();
 
-        for (int i = 0; i < _addings.length; i++) {
-            int index;
+        if (_createTestItems) {
+            _items = new TestItems();
 
-            do {
-                index = _random.nextInt(_items.get_artistAmount());
-            } while (!indexes.contains(index));
-            indexes.add(index);
+            for (int i = 0; i < _addings.length; i++) {
+                int index;
 
-            _addings[i] = _items.get_artists()[index];
+                do {
+                    index = _random.nextInt(_items.get_artistAmount());
+                } while (indexes.contains(index));
+                indexes.add(index);
+
+                _addings[i] = _items.get_artists()[index];
+            }
+
+            _adding = _items.get_artists()[_random.nextInt(_items.get_artistAmount())];
+        } else {
+            for (int i = 0; i < _addings.length; i++) {
+                int index;
+
+                do {
+                    index = _random.nextInt(_addings.length);
+                } while (indexes.contains(index));
+                indexes.add(index);
+
+                _addings[i] = _items.get_artists()[index];
+            }
         }
-
-        _adding = _items.get_artists()[_random.nextInt(_items.get_artistAmount())];
     }
 
     /**
