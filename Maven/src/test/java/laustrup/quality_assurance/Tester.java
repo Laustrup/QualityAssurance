@@ -6,6 +6,7 @@ import laustrup.utilities.console.Printer;
 import laustrup.services.RandomCreatorService;
 import laustrup.quality_assurance.items.aaa.assertions.Asserter;
 
+import lombok.Setter;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.util.Random;
@@ -27,7 +28,9 @@ public abstract class Tester<T,R> extends Asserter<T,R> {
      * In case testItems should create items beforeEach, this should be true.
      * If this project isn't a Bandwich project, it is recommended to be false.
      */
+    @Setter
     private boolean _createTestItems = true;
+
     /** The object that is to be expected to be asserted as the same as the actual. */
     protected Object _expected;
 
@@ -122,15 +125,11 @@ public abstract class Tester<T,R> extends Asserter<T,R> {
 
             _adding = _items.get_artists()[_random.nextInt(_items.get_artistAmount())];
         } else {
+            _items = null;
+            _adding = 1;
+
             for (int i = 0; i < _addings.length; i++) {
-                int index;
-
-                do {
-                    index = _random.nextInt(_addings.length);
-                } while (indexes.contains(index));
-                indexes.add(index);
-
-                _addings[i] = _items.get_artists()[index];
+                _addings[i] = i+2;
             }
         }
     }

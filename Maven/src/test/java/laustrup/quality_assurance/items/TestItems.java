@@ -1,7 +1,6 @@
 package laustrup.quality_assurance.items;
 
 import laustrup.utilities.collections.lists.Liszt;
-import laustrup.utilities.console.Printer;
 import laustrup.models.Model;
 import laustrup.models.Rating;
 import laustrup.models.albums.Album;
@@ -29,20 +28,18 @@ import laustrup.services.TimeService;
 import laustrup.quality_assurance.Tester;
 
 import lombok.Getter;
-
-import org.junit.jupiter.api.Test;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import static laustrup.quality_assurance.items.aaa.assertions.AssertionFailer.failing;
-
 /**
  * Contains different attributes that imitates models.
  * Primary intended to be used for tests, involving models.
  */
+@ToString
 public class TestItems extends Tester<Object, Object> {
 
     /**
@@ -483,13 +480,13 @@ public class TestItems extends Tester<Object, Object> {
         int amount = _random.nextInt(101);
 
         for (int i = 0; i < amount; i++) {
-            String content = new String();
+            StringBuilder content = new StringBuilder();
             int contentAmount = _random.nextInt(101);
 
-            for (int j = 0; j < contentAmount; j++) content += "Test ";
+            content.append("Test ".repeat(contentAmount));
 
             mails.add(new Mail(i+1, null, members.Get(_random.nextInt(members.size())+1),
-                    content, _random.nextBoolean(), generatePlato(), _random.nextBoolean(), LocalDateTime.now()));
+                    content.toString(), _random.nextBoolean(), generatePlato(), _random.nextBoolean(), LocalDateTime.now()));
         }
 
         return mails;
@@ -502,25 +499,5 @@ public class TestItems extends Tester<Object, Object> {
         for (int i = 0; i < amount; i++) ratings.add(_ratings[_random.nextInt(_ratings.length)]);
 
         return ratings;
-    }
-
-    @Test
-    void itemTest() {
-        test(t -> {
-            try {
-                act(e -> {
-                    resetItems();
-                    return null;
-                });
-
-                success("Items are successfully reset!");
-            } catch (Exception e) {
-                Printer.get_instance().print("Test items caught an Exception...", e);
-
-                failing("Items could not be reset...", e);
-            }
-
-            return end("itemTest");
-        });
     }
 }

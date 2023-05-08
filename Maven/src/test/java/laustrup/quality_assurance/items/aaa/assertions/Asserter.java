@@ -238,7 +238,9 @@ public abstract class Asserter<T,R> extends Actor<T,R> {
                         });
                         assertEquals(expected.get_items().Get(j).get_endpoint(),actual.get_items().Get(j).get_endpoint());
                         AssertionActor.assertIf(expected.get_items().Get(j).get_event() != null,
-                                expected.get_items().Get(j).get_event().get_primaryId(),actual.get_items().Get(j).get_primaryId());
+                                expected.get_items().Get(j).get_event() != null ?
+                                        expected.get_items().Get(j).get_event().get_primaryId() : 0,
+                                actual.get_items().Get(j).get_primaryId());
                         assertEquals(expected.get_items().Get(j).get_kind(),actual.get_items().Get(j).get_kind());
                     }
                 }
