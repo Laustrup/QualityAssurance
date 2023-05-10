@@ -1,7 +1,8 @@
-package laustrup.quality_assurance.items.aaa.assertions;
+package laustrup.quality_assurance.inheritances.aaa.assertions;
 
 import lombok.Getter;
 
+/** Optional scenarios of an Assertion possibility. */
 public enum AssertionMessage {
     SUCCESS("SUCCESS!"),
     ASSERTION_ERROR("There was a error in asserting..."),
@@ -9,7 +10,8 @@ public enum AssertionMessage {
     IS_NULL("Expected and/or actual is null..."),
     LENGTH_IS_DIFFERENT("Expected and/or actual length is not the same...");
 
+    /** The value as a message for the specific enum. */
     @Getter
-    private String _content;
+    private final String _content;
     AssertionMessage(String content) { _content = content; }
 }

@@ -1,11 +1,11 @@
-package laustrup.quality_assurance.items.aaa.assertions;
+package laustrup.quality_assurance.inheritances.aaa.assertions;
 
-import laustrup.quality_assurance.items.aaa.Actor;
+import laustrup.quality_assurance.inheritances.aaa.Actor;
 import laustrup.utilities.console.Printer;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
-public abstract class AssertionFailer<T,R> extends Actor<T,R> {
+public abstract class AssertionFailer<V> extends Actor<V> {
 
     /**
      * Will make the assertion fail.

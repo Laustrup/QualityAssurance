@@ -1,11 +1,11 @@
-package laustrup.quality_assurance.items.aaa.assertions;
+package laustrup.quality_assurance.inheritances.aaa.assertions;
 
 import laustrup.utilities.collections.lists.Liszt;
 
 /**
  * Will check for assertion scenarios such as is null or different length of inputs.
  */
-public class AssertionChecker {
+public abstract class AssertionChecker {
 
     /**
      * Checks if either of the inputs are either null or have different length.

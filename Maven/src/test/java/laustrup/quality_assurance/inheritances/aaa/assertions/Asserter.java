@@ -1,6 +1,6 @@
-package laustrup.quality_assurance.items.aaa.assertions;
+package laustrup.quality_assurance.inheritances.aaa.assertions;
 
-import laustrup.quality_assurance.items.aaa.Actor;
+import laustrup.quality_assurance.inheritances.aaa.Actor;
 import laustrup.utilities.collections.lists.Liszt;
 import laustrup.utilities.console.Printer;
 import laustrup.models.Rating;
@@ -28,10 +28,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Will do assertions, mostly specified for Bandwich objects
- * @param <T> The input type.
- * @param <R> The return type.
+ * @param <T> The return type.
  */
-public abstract class Asserter<T,R> extends Actor<T,R> {
+public abstract class Asserter<T> extends Actor<T> {
 
     /**
      * Generates a message for cases, where an element such or should not be null.
@@ -62,10 +61,10 @@ public abstract class Asserter<T,R> extends Actor<T,R> {
     protected void asserting(User expected, User actual, User.Authority authority) {
         Printer.get_instance().print("Expected = " + expected + "\n\nActual = " + actual);
         switch (authority) {
-            case PARTICIPANT -> assertParticipants((Participant) expected, (Participant) actual, true);
+            case PARTICIPANT -> assertParticipants((Participant) expected, (Participant) actual);
             case BAND -> assertBand((Band) expected,(Band) actual);
-            case ARTIST -> assertArtists((Artist) expected,(Artist) actual, true);
-            case VENUE -> assertVenues((Venue) expected,(Venue) actual);
+            case ARTIST -> assertArtists((Artist) expected,(Artist) actual);
+            case VENUE -> assertion((Venue) expected,(Venue) actual);
             default -> AssertionFailer.failing(switchElementUnknown(authority), new UnknownElementException(null,authority));
         }
     }
@@ -75,8 +74,8 @@ public abstract class Asserter<T,R> extends Actor<T,R> {
      * @param expected The Participant that is arranged and defined.
      * @param actual The Participant that is the result of an action.
      */
-    protected void assertParticipants(Participant expected, Participant actual, boolean assertNotNull) {
-        AssertionActor.doAssert(a -> {
+    protected void assertParticipants(Participant expected, Participant actual) {
+        AssertionActor.doAssert(() -> {
             if (!AssertionChecker.allowObjects(expected,actual))
                 return AssertionChecker.objectMessage(expected,actual);
 
@@ -97,7 +96,7 @@ public abstract class Asserter<T,R> extends Actor<T,R> {
      * @param actual The Band that is the result of an action.
      */
     protected void assertBand(Band expected, Band actual) {
-        AssertionActor.doAssert(a -> {
+        AssertionActor.doAssert(() -> {
             if (!AssertionChecker.allowObjects(expected,actual))
                 return AssertionChecker.objectMessage(expected,actual);
 
@@ -118,8 +117,8 @@ public abstract class Asserter<T,R> extends Actor<T,R> {
      * @param expected The Artist that is arranged and defined.
      * @param actual The Artist that is the result of an action.
      */
-    protected void assertArtists(Artist expected, Artist actual, boolean assertNotNull) {
-        AssertionActor.doAssert(a -> {
+    protected void assertArtists(Artist expected, Artist actual) {
+        AssertionActor.doAssert(() -> {
             if (!AssertionChecker.allowObjects(expected,actual))
                 return AssertionChecker.objectMessage(expected,actual);
 
@@ -144,7 +143,7 @@ public abstract class Asserter<T,R> extends Actor<T,R> {
      * @param actual The Performer that is the result of an action.
      */
     private void assertPerformers(Performer expected, Performer actual) {
-        AssertionActor.doAssert(a -> {
+        AssertionActor.doAssert(() -> {
             if (!AssertionChecker.allowObjects(expected,actual))
                 return AssertionChecker.objectMessage(expected,actual);
 
@@ -172,8 +171,8 @@ public abstract class Asserter<T,R> extends Actor<T,R> {
      * @param expected The Venue that is arranged and defined.
      * @param actual The Venue that is the result of an action.
      */
-    protected void assertVenues(Venue expected, Venue actual) {
-        AssertionActor.doAssert(a -> {
+    protected void assertion(Venue expected, Venue actual) {
+        AssertionActor.doAssert(() -> {
             if (!AssertionChecker.allowObjects(expected,actual))
                 return AssertionChecker.objectMessage(expected,actual);
 
@@ -193,7 +192,7 @@ public abstract class Asserter<T,R> extends Actor<T,R> {
      * @param actual The User that is the result of an action.
      */
     private void assertUsers(User expected, User actual) {
-        AssertionActor.doAssert(a -> {
+        AssertionActor.doAssert(() -> {
             if (!AssertionChecker.allowObjects(expected,actual))
                 return AssertionChecker.objectMessage(expected,actual);
 
@@ -221,7 +220,7 @@ public abstract class Asserter<T,R> extends Actor<T,R> {
      * @param actuals The Albums that are the result of an action.
      */
     protected void assertAlbums(Liszt<Album> expectations, Liszt<Album> actuals) {
-        AssertionActor.doAssert(a -> {
+        AssertionActor.doAssert(() -> {
             if (!AssertionChecker.allowLiszt(expectations, actuals))
                 return AssertionChecker.lisztMessage(expectations,actuals);
 
@@ -256,7 +255,7 @@ public abstract class Asserter<T,R> extends Actor<T,R> {
      * @param actuals The Ratings that are the result of an action.
      */
     protected void assertRatings(Liszt<Rating> expectations, Liszt<Rating> actuals) {
-        AssertionActor.doAssert(a -> {
+        AssertionActor.doAssert(() -> {
             if (!AssertionChecker.allowLiszt(expectations,actuals))
                 return AssertionChecker.lisztMessage(expectations,actuals);
 
@@ -285,7 +284,7 @@ public abstract class Asserter<T,R> extends Actor<T,R> {
      * @param actuals The ChatRooms that are the result of an action.
      */
     public void assertChatRooms(Liszt<ChatRoom> expectations, Liszt<ChatRoom> actuals) {
-        AssertionActor.doAssert(a -> {
+        AssertionActor.doAssert(() -> {
             if (!AssertionChecker.allowLiszt(expectations,actuals))
                 return AssertionChecker.lisztMessage(expectations,actuals);
 
@@ -312,7 +311,7 @@ public abstract class Asserter<T,R> extends Actor<T,R> {
      * @param actuals The Mails that are the result of an action.
      */
     protected void assertMails(Liszt<Mail> expectations, Liszt<Mail> actuals) {
-        AssertionActor.doAssert(a -> {
+        AssertionActor.doAssert(() -> {
             if (!AssertionChecker.allowLiszt(expectations,actuals))
                 return AssertionChecker.lisztMessage(expectations,actuals);
 
@@ -339,7 +338,7 @@ public abstract class Asserter<T,R> extends Actor<T,R> {
      * @param actual The Subscription that is the result of an action.
      */
     protected void asserting(Subscription expected, Subscription actual) {
-        AssertionActor.doAssert(a -> {
+        AssertionActor.doAssert(() -> {
             if (!AssertionChecker.allowObjects(expected,actual))
                 return AssertionChecker.objectMessage(expected,actual);
 
@@ -368,7 +367,7 @@ public abstract class Asserter<T,R> extends Actor<T,R> {
      * @param actuals The Requests that are the result of an action.
      */
     protected void assertRequests(Liszt<Request> expectations, Liszt<Request> actuals) {
-        AssertionActor.doAssert(a -> {
+        AssertionActor.doAssert(() -> {
             if (!AssertionChecker.allowLiszt(expectations,actuals))
                 return AssertionChecker.lisztMessage(expectations,actuals);
 
@@ -391,7 +390,7 @@ public abstract class Asserter<T,R> extends Actor<T,R> {
      * @param actual The information that is the result of an action.
      */
     protected void asserting(ContactInfo expected, ContactInfo actual) {
-        AssertionActor.doAssert(a -> {
+        AssertionActor.doAssert(() -> {
             if (!AssertionChecker.allowObjects(expected,actual))
                 return AssertionChecker.objectMessage(expected,actual);
 
@@ -413,7 +412,7 @@ public abstract class Asserter<T,R> extends Actor<T,R> {
      * @param actuals The Bulletins that are the result of an action.
      */
     protected void assertBulletins(Liszt<Bulletin> expectations, Liszt<Bulletin> actuals) {
-        AssertionActor.doAssert(a -> {
+        AssertionActor.doAssert(() -> {
             if (!AssertionChecker.allowLiszt(expectations,actuals))
                 return AssertionChecker.lisztMessage(expectations,actuals);
 
@@ -440,7 +439,7 @@ public abstract class Asserter<T,R> extends Actor<T,R> {
      * @param actuals The Events that are the result of an action.
      */
     protected void assertEvents(Liszt<Event> expectations, Liszt<Event> actuals) {
-        AssertionActor.doAssert(a -> {
+        AssertionActor.doAssert(() -> {
             if (!AssertionChecker.allowLiszt(expectations,actuals))
                 return AssertionChecker.lisztMessage(expectations,actuals);
 
@@ -457,26 +456,67 @@ public abstract class Asserter<T,R> extends Actor<T,R> {
      * @param actual The Event that is the result of an action.
      */
     protected void asserting(Event expected, Event actual) {
-        AssertionActor.doAssert(a -> {
+        AssertionActor.doAssert(() -> {
             if (!AssertionChecker.allowObjects(expected,actual))
                 return AssertionChecker.objectMessage(expected, actual);
 
-            AssertionActor.assertIf(AssertionChecker.allowObjects(expected.get_openDoors(),actual.get_openDoors()),expected.get_openDoors(),actual.get_openDoors());
-            AssertionActor.assertIf(AssertionChecker.allowObjects(expected.get_start(),actual.get_start()),expected.get_start(),actual.get_start());
-            AssertionActor.assertIf(AssertionChecker.allowObjects(expected.get_end(),actual.get_end()),expected.get_end(),actual.get_end());
-            AssertionActor.assertIf(AssertionChecker.allowObjects(expected.get_contactInfo(),actual.get_contactInfo()),expected.get_contactInfo(),actual.get_contactInfo());
-            asserting(expected.get_cancelled(),actual.get_cancelled());
-            asserting(expected.get_soldOut(),actual.get_soldOut());
-            asserting(expected.get_voluntary(),actual.get_voluntary());
-            asserting(expected.get_public(),actual.get_public());
+            AssertionActor.assertIf(
+                AssertionChecker.allowObjects(expected.get_openDoors(),actual.get_openDoors()),
+                expected.get_openDoors(),actual.get_openDoors()
+            );
+            AssertionActor.assertIf(
+                AssertionChecker.allowObjects(expected.get_start(),actual.get_start()),
+                    expected.get_start(),actual.get_start()
+            );
+            AssertionActor.assertIf(
+                AssertionChecker.allowObjects(expected.get_end(),actual.get_end()),
+                expected.get_end(),actual.get_end()
+            );
+            AssertionActor.assertIf(
+                AssertionChecker.allowObjects(expected.get_contactInfo(),actual.get_contactInfo()),
+                expected.get_contactInfo(),actual.get_contactInfo()
+            );
+            AssertionActor.assertIf(
+                expected.get_cancelled()!=null&&actual.get_cancelled()!=null,
+                () -> asserting(expected.get_cancelled(), actual.get_cancelled())
+            );
+            AssertionActor.assertIf(
+                expected.get_soldOut()!=null&&actual.get_soldOut()!=null,
+                () -> asserting(expected.get_soldOut(), actual.get_soldOut())
+            );
+            AssertionActor.assertIf(
+                expected.get_voluntary()!=null&&actual.get_voluntary()!=null,
+                () -> asserting(expected.get_voluntary(), actual.get_voluntary())
+            );
+            AssertionActor.assertIf(
+                expected.get_public()!=null&&actual.get_public()!=null,
+                () -> asserting(expected.get_public(), actual.get_public())
+            );
+
             assertEquals(expected.get_length(),expected.get_length());
             assertEquals(expected.get_location(), actual.get_location());
             assertEquals(expected.get_ticketsURL(), actual.get_ticketsURL());
-            assertGigs(expected.get_gigs(),actual.get_gigs());
-            assertVenues(expected.get_venue(),actual.get_venue());
-            assertRequests(expected.get_requests(),actual.get_requests());
-            assertParticipations(expected.get_participations(),actual.get_participations());
-            assertAlbums(expected.get_albums(),actual.get_albums());
+
+            AssertionActor.assertIf(
+                expected.get_gigs()!=null&&actual.get_gigs()!=null,
+                () -> assertGigs(expected.get_gigs(),actual.get_gigs())
+            );
+            AssertionActor.assertIf(
+                expected.get_venue()!=null&&actual.get_venue()!=null,
+                () -> assertion(expected.get_venue(),actual.get_venue())
+            );
+            AssertionActor.assertIf(
+                expected.get_requests() != null && actual.get_requests() != null,
+                () -> assertRequests(expected.get_requests(), actual.get_requests())
+            );
+            AssertionActor.assertIf(
+                expected.get_participations() != null && actual.get_participations() != null,
+                () -> assertParticipations(expected.get_participations(), actual.get_participations())
+            );
+            AssertionActor.assertIf(
+                expected.get_albums()!=null&&actual.get_albums()!=null,
+                () -> assertAlbums(expected.get_albums(),actual.get_albums())
+            );
 
             return AssertionMessage.SUCCESS.get_content();
         });
@@ -488,7 +528,7 @@ public abstract class Asserter<T,R> extends Actor<T,R> {
      * @param actuals The Participations that are the result of an action.
      */
     protected void assertParticipations(Liszt<Participation> expectations, Liszt<Participation> actuals) {
-        AssertionActor.doAssert(a -> {
+        AssertionActor.doAssert(() -> {
             if (!AssertionChecker.allowLiszt(expectations,actuals))
                 return AssertionChecker.lisztMessage(expectations,actuals);
 
@@ -505,7 +545,7 @@ public abstract class Asserter<T,R> extends Actor<T,R> {
      * @param actual The Participation that is the result of an action.
      */
     protected void asserting(Participation expected, Participation actual) {
-        AssertionActor.doAssert(a -> {
+        AssertionActor.doAssert(() -> {
             if (!AssertionChecker.allowObjects(expected,actual))
                 return AssertionChecker.objectMessage(expected,actual);
 
@@ -521,7 +561,7 @@ public abstract class Asserter<T,R> extends Actor<T,R> {
      * @param actuals The Gigs that are the result of an action.
      */
     protected void assertGigs(Liszt<Gig> expectations, Liszt<Gig> actuals) {
-        AssertionActor.doAssert(a -> {
+        AssertionActor.doAssert(() -> {
             if (!AssertionChecker.allowLiszt(expectations,actuals))
                 return AssertionChecker.lisztMessage(expectations,actuals);
 
@@ -540,7 +580,7 @@ public abstract class Asserter<T,R> extends Actor<T,R> {
      * @param actual The Gig that is the result of an action.
      */
     protected void asserting(Gig expected, Gig actual) {
-        AssertionActor.doAssert(a -> {
+        AssertionActor.doAssert(() -> {
             if (!AssertionChecker.allowObjects(expected,actual))
                 return AssertionChecker.objectMessage(expected,actual);
 
@@ -559,7 +599,7 @@ public abstract class Asserter<T,R> extends Actor<T,R> {
      * @param actuals The acts that is the result of an action.
      */
     protected void asserting(Performer[] expectations, Performer[] actuals) {
-        AssertionActor.doAssert(a -> {
+        AssertionActor.doAssert(() -> {
             if (!AssertionChecker.allowCollection(expectations,actuals))
                 return AssertionChecker.collectionMessage(expectations,actuals);
 
@@ -585,7 +625,7 @@ public abstract class Asserter<T,R> extends Actor<T,R> {
      * @param isTrue A statement or value that must be true.
      */
     protected void asserting(boolean isTrue) {
-        AssertionActor.doAssert(a -> {
+        AssertionActor.doAssert(() -> {
             assertTrue(isTrue);
             return AssertionMessage.SUCCESS.get_content();
         });
@@ -597,7 +637,7 @@ public abstract class Asserter<T,R> extends Actor<T,R> {
      * @param actual The Object that is the result of an action
      */
     protected void asserting(Object expected, Object actual) {
-        AssertionActor.doAssert(a -> {
+        AssertionActor.doAssert(() -> {
                 if (!AssertionChecker.allowObjects(expected,actual))
                     return AssertionChecker.objectMessage(expected,actual);
 
@@ -613,7 +653,7 @@ public abstract class Asserter<T,R> extends Actor<T,R> {
      * @param actual The String that is the result of an action
      */
     protected void asserting(String expected, String actual) {
-        AssertionActor.doAssert(a -> {
+        AssertionActor.doAssert(() -> {
             if (!AssertionChecker.allowObjects(expected,actual))
                 return AssertionChecker.objectMessage(expected,actual);
 
@@ -627,7 +667,7 @@ public abstract class Asserter<T,R> extends Actor<T,R> {
      * @param object The Object that will be asserted.
      */
     protected void notNull(Object object) {
-        AssertionActor.doAssert(a -> {
+        AssertionActor.doAssert(() -> {
             assertNotNull(object);
             return AssertionMessage.SUCCESS.get_content();
         });
@@ -638,7 +678,7 @@ public abstract class Asserter<T,R> extends Actor<T,R> {
      * @param message A description of the assertion.
      */
     protected void success(String message) {
-        AssertionActor.doAssert(a -> {
+        AssertionActor.doAssert(() -> {
             _print += "\n\n\t" + message + "\n";
             assertTrue(true);
             return AssertionMessage.SUCCESS.get_content();

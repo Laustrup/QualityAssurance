@@ -1,31 +1,31 @@
 package laustrup.quality_assurance;
 
-import laustrup.quality_assurance.items.TestItems;
+import laustrup.quality_assurance.inheritances.items.TestItems;
 import laustrup.utilities.collections.lists.Liszt;
 import laustrup.utilities.console.Printer;
 import laustrup.services.RandomCreatorService;
-import laustrup.quality_assurance.items.aaa.assertions.Asserter;
+import laustrup.quality_assurance.inheritances.aaa.assertions.Asserter;
 
 import lombok.Setter;
+
 import org.junit.jupiter.api.BeforeEach;
 
 import java.util.Random;
-import java.util.function.Function;
+import java.util.function.Supplier;
 
-import static laustrup.quality_assurance.items.aaa.assertions.AssertionFailer.failing;
+import static laustrup.quality_assurance.inheritances.aaa.assertions.AssertionFailer.failing;
 
 /**
  * Adds the test method, that will log each action of the test into print.
  * Extends ARRANGER, ACTOR and ASSERTER.
  * Includes a random generated password, that will be random generated beforeEach,
  * along with other attributes such as expected, a random and other.
- * @param <T> The input type.
- * @param <R> The return type.
+ * @param <T> The return type.
  */
-public abstract class Tester<T,R> extends Asserter<T,R> {
+public abstract class Tester<T> extends Asserter<T> {
 
     /**
-     * In case testItems should create items beforeEach, this should be true.
+     * In case testItems should create inheritances beforeEach, this should be true.
      * If this project isn't a Bandwich project, it is recommended to be false.
      */
     @Setter
@@ -47,7 +47,7 @@ public abstract class Tester<T,R> extends Asserter<T,R> {
     protected int _index;
 
     /**
-     * Contains different generated items to use for testing.
+     * Contains different generated inheritances to use for testing.
      * Are being reset for each method.
      */
     protected TestItems _items;
@@ -110,7 +110,10 @@ public abstract class Tester<T,R> extends Asserter<T,R> {
         Liszt<Integer> indexes = new Liszt<>();
 
         if (_createTestItems) {
-            _items = new TestItems();
+            if (_items == null)
+                _items = new TestItems();
+            else
+                _items.resetItems();
 
             for (int i = 0; i < _addings.length; i++) {
                 int index;
@@ -135,31 +138,37 @@ public abstract class Tester<T,R> extends Asserter<T,R> {
     }
 
     /**
-     * Must be used before each test method, since it will catch exceptions and print test informations.
-     * @param function The test algorithm that will be applied,
+     * Must be used before each test method, since it will catch exceptions and print test information.
+     * @param supplier The test algorithm that will be supplied,
      *                 if the algorithm return false, something unmeant occurred.
      */
-    protected void test(Function<T,Boolean> function) {
+    protected void test(Supplier<String> supplier) {
         try {
-            if (function.apply(null))
+            String response = supplier.get();
+            if (response.equals(TestMessage.SUCCESS.get_content()))
                 Printer.get_instance().print(_print);
-            else {
-                addToPrint("Return of function is false, therefore something that was unmeant occurred...");
-                Printer.get_instance().print(_print);
-            }
+            else
+                failing(response);
         } catch (Exception e) {
+            addToPrint("An exception was caught in the main test method...");
+            addToPrint(e.getMessage());
             Printer.get_instance().print(_print, e);
-            failing("An exception was caught in the main test method...", e);
         }
     }
 
     /**
-     * Is for the ending of a test, will add to the print that the test has been completed.
-     * @param title The title of the current test.
-     * @return Always true, since the test made its finally goal.
+     * Must be used before each test method, since it will catch exceptions and print test information.
+     * @param runnable The test algorithm that will be run,
+     *                 if the algorithm return false, something unmeant occurred.
      */
-    protected boolean end(String title) {
-        addToPrint("The test " + title + " made it through the end without any exceptions occurring!");
-        return true;
+    protected void test(Runnable runnable) {
+        try {
+            runnable.run();
+            Printer.get_instance().print(_print);
+        } catch (Exception e) {
+            addToPrint("An exception was caught in the main test method...");
+            addToPrint(e.getMessage());
+            Printer.get_instance().print(_print, e);
+        }
     }
 }

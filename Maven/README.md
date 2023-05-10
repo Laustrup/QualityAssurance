@@ -1,6 +1,6 @@
 # Quality Assurance for Java Maven classes
 
-Class attributes are starting with _ as a syntax.
+Class attributes are starting with _ as a syntax and enums with uppercase spelling.
 
 Java 18 or higher is required.
 
@@ -10,7 +10,7 @@ Java 18 or higher is required.
   * The items of ARRANGE
   * Performance of ACT
 * More clean AAA code
-* Super classes implemented for Bandwich models (can also be chosen to be without, which is recommended for non Bandwich projects)
+* Superclasses implemented for Bandwich models (can also be chosen to be without, which is recommended for non Bandwich projects)
 * Attributes available:
   * _random, which is a simple Random for generating random values
   * _password, which is a password, that will be generated at each beforeEach
@@ -22,17 +22,17 @@ Java 18 or higher is required.
 
 Firstly, the class used for the testing, needs to extend the Tester class
 
-```class Tests extends Tester<T><R>```
+```class Tests extends Tester<T>```
 
-The T is the type of input into lambda functions and R is the return.
+The T is the return type.
 
 Now Tester's methods, superclasses such as Arranger, Actor and Asserter is available for use.
 
-Lambda functions are used to include functions in each steps, the method itself needs to be as a lambda function.
+Lambda functions are used to include Suppliers, Runnables and Functions in each step, the method itself needs to be as a lambda function.
 
 ```
 void canTest() {
-  test(t ->
+  test(() ->
     ...
   );
 }
@@ -42,16 +42,19 @@ Each step itself is including a lambda function, which can be like
 
 ```
 void canTest() {
-  test(t -> {
-    R[] arrangement = arrange(e -> {0,1});
+  test(() -> {
+    T[] arrangement = arrange(() -> {0,1});
+    T input = arrangement[0], expected = arrangement[1];
     
-    R act = act(e -> methodToTest(arrangement[0],arrangement[1]));
+    T actual = act(() -> increment(input));
     
-    asserting(act, arrangement[0]);
+    asserting(expected, actual);
     
-    return end("canTest");
+    return TestMessage.SUCCESS.get_content();
   });
 }
 ```
 
-Where end("canTest") is by defining, that the test is completed.
+It is possible, but not needed, for the callable input in the test method to make a return as a TestMessage enum,
+if it is not a SUCCESS enum, it will fail the test with the message given to the specific enum or a different return as a String,
+otherwise if it will return a SUCCESS or nothing it will finish the test with a print of details.

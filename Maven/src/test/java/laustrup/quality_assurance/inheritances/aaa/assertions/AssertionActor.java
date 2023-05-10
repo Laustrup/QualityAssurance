@@ -1,26 +1,34 @@
-package laustrup.quality_assurance.items.aaa.assertions;
+package laustrup.quality_assurance.inheritances.aaa.assertions;
 
+import java.util.concurrent.Callable;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static laustrup.quality_assurance.items.aaa.assertions.AssertionFailer.failing;
+import static laustrup.quality_assurance.inheritances.aaa.assertions.AssertionFailer.failing;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Is used to perform assertions for the asserter.
  */
-public class AssertionActor {
+public abstract class AssertionActor {
 
     /**
-     * Will use the function to assert items.
-     * If the return of the function is not SUCCESS.get_content(),
-     * it will fail with the return as a message.
-     * @param function The function that will assert.
+     * Will use the runnable to assert inheritances.
+     * @param callable The Callable that will assert.
      */
-    static void doAssert(Function<Object,String> function) { doAssert(null, function); }
+    static void doAssert(Callable<String> callable) {
+        try {
+            String message = callable.call();
+            if (!message.equals(AssertionMessage.SUCCESS.get_content()))
+                failing(message);
+        } catch (Exception e) {
+            failing("Trouble asserting of callable " + callable,e);
+        }
+    }
 
     /**
-     * Will use the function to assert items.
+     * Will use the function to assert inheritances.
      * If the return of the function is not SUCCESS.get_content(),
      * it will fail with the return as a message.
      * @param input The input for the function
@@ -41,6 +49,16 @@ public class AssertionActor {
     static void assertIf(boolean statement, Object expected, Object actual) {
         if (statement)
             assertEquals(expected, actual);
+    }
+
+    /**
+     * Will only assert expected and actual if statement is true.
+     * @param statement The statement that decides if the assertion should occur.
+     * @param runnable The assertion that will be performed.
+     */
+    static void assertIf(boolean statement, Runnable runnable) {
+        if (statement)
+            runnable.run();
     }
 
     /**

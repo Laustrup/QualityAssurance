@@ -1,4 +1,4 @@
-package laustrup.quality_assurance.items.aaa;
+package laustrup.quality_assurance.inheritances.aaa;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
