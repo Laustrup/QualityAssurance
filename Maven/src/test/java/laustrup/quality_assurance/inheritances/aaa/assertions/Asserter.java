@@ -684,4 +684,19 @@ public abstract class Asserter<T> extends Actor<T> {
             return AssertionMessage.SUCCESS.get_content();
         });
     }
+
+    /**
+     * Will assert success, if the runnable throws an Exception.
+     * Otherwise, it will fail.
+     * It is managed with a try/catch.
+     * @param runnable A Lambda function, that should throw an Exception.
+     */
+    protected void assertException(Runnable runnable) {
+        try {
+            runnable.run();
+            fail("The runnable didn't throw an exception...");
+        } catch (Exception e) {
+            success("The runnable threw an Exception! Which was: \n" + e.getMessage());
+        }
+    }
 }

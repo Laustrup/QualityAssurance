@@ -32,9 +32,7 @@ import java.util.Set;
 public class TestItems extends ItemGenerator {
 
     /** Will start with all inheritances being reset. */
-    public TestItems() {
-        setupItems();
-    }
+    public TestItems() { setupItems(); }
 
 
     /** Empties all variables and sets them up afterwards */

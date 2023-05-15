@@ -29,24 +29,40 @@ public class QualityAssuranceTests extends Tester<TestItems> {
         });
     }
 
-    //TODO Won't change values, but they are also set to null before setup.
-//    @Test
-//    void canResetItems() {
-//        test(() -> {
-//            try {
-//                TestItems before = arrange(() -> _items);
-//
+    @Test @SuppressWarnings("all")
+    void failsOnException() {
+        assertException(() -> {
+            test(() -> {
+                arrange();
+                Integer.parseInt("String");
+            });
+            test(() -> {
+                arrange();
+                Integer.parseInt("String");
+                return TestMessage.SUCCESS.get_content();
+            });
+        });
+    }
+
+    //TODO Won't change values with TestItem's resetItems(), but they are also set to null before setup.
+    @Test
+    void canResetItems() {
+        test(() -> {
+            try {
+                TestItems before = arrange(() -> _items);
+
 //                act(() -> _items.resetItems());
-//
-//                if (!compare(before,_items))
-//                    success("Items are reset without any errors!\n \n\tItems are:\n \n"+_items.toString());
-//                else
-//                    failing("Items are not reset...");
-//            } catch (Exception e) {
-//                failing("Items could not be reset...", e);
-//            }
-//        });
-//    }
+                act(this::resetItems);
+
+                if (!compare(before,_items))
+                    success("Items are reset without any errors!\n \n\tItems are:\n \n"+_items.toString());
+                else
+                    failing("Items are not reset...");
+            } catch (Exception e) {
+                failing("Items could not be reset...", e);
+            }
+        });
+    }
 
     /**
      * Checks if the attributes of each testItems is alike.

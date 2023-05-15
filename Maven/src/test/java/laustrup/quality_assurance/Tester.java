@@ -153,6 +153,7 @@ public abstract class Tester<T> extends Asserter<T> {
             addToPrint("An exception was caught in the main test method...");
             addToPrint(e.getMessage());
             Printer.get_instance().print(_print, e);
+            throw e;
         }
     }
 
@@ -169,6 +170,10 @@ public abstract class Tester<T> extends Asserter<T> {
             addToPrint("An exception was caught in the main test method...");
             addToPrint(e.getMessage());
             Printer.get_instance().print(_print, e);
+            throw e;
         }
     }
+
+    /** Will set the TestItems into a new initiate. */
+    public void resetItems() { _items = new TestItems(); }
 }
