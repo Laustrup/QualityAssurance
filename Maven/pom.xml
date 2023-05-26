@@ -4,7 +4,7 @@
 
   <groupId>laustrup</groupId>
   <artifactId>quality-assurance</artifactId>
-  <version>2023.2.01</version>
+  <version>2023.2.02</version>
   <description>
     This project contains the JUnit testing tools created by Laustrup.
     Arrange, Act and Assert are the methods mainly used in this project.

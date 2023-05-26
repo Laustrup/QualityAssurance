@@ -180,15 +180,16 @@ public class TestItems extends ItemGenerator {
                 fans.add(_participants[index]);
             }
 
-            _bands[i] = new Band(id, "Band "+id, "Description "+id,
-                    _contactInfo[_random.nextInt(_contactInfo.length)], new Liszt<>(new Album[]{_albums[_random.nextInt(_albums.length)]}),
-                    randomizeRatings(), new Liszt<>(), new Liszt<>(), new Liszt<>(), setupSubscription(new Band(0)), new Liszt<>(),
-                    members, "Gear "+id,fans, new Liszt<>(), LocalDateTime.now());
+            _bands[i] = generateBand(id, members, fans, setupSubscription(new Band(id)));
 
-            for (Artist member : _bands[i].get_members()) _artists[(int) (member.get_primaryId()-1)].addBand(_bands[i]);
-            for (User fan : _bands[i].get_fans()) _participants[(int) (fan.get_primaryId() - 1)].add(_bands[i]);
+            for (Artist member : _bands[i].get_members())
+                _artists[(int) (member.get_primaryId()-1)].addBand(generateBand(id, new Liszt<>(), fans, setupSubscription(new Band(id))));
+            for (User fan : _bands[i].get_fans())
+                _participants[(int) (fan.get_primaryId() - 1)].add(generateBand(id, new Liszt<>(), fans, setupSubscription(new Band(id))));
         }
     }
+
+
 
     /** Creates som indexes for Subscriptions. */
     public Subscription setupSubscription(User user) {

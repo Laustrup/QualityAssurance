@@ -2,6 +2,7 @@ package laustrup.quality_assurance.inheritances.items;
 
 import laustrup.models.Model;
 import laustrup.models.Rating;
+import laustrup.models.albums.Album;
 import laustrup.models.albums.AlbumItem;
 import laustrup.models.chats.Request;
 import laustrup.models.chats.messages.Bulletin;
@@ -11,7 +12,10 @@ import laustrup.models.events.Gig;
 import laustrup.models.events.Participation;
 import laustrup.models.users.User;
 import laustrup.models.users.sub_users.Performer;
+import laustrup.models.users.sub_users.bands.Artist;
+import laustrup.models.users.sub_users.bands.Band;
 import laustrup.models.users.sub_users.participants.Participant;
+import laustrup.models.users.subscriptions.Subscription;
 import laustrup.utilities.collections.lists.Liszt;
 import laustrup.utilities.parameters.Plato;
 
@@ -207,6 +211,22 @@ public abstract class ItemGenerator extends TestCollections {
         }
 
         return mails;
+    }
+
+    /**
+     * Generates a Band from the given parameters, basically an easy way to construct a simple Band.
+     * @param id The unique id for the Band.
+     * @param members The Artist members of the Band.
+     * @param fans The Users that are following the Band.
+     * @param subscription The Subscription for the Band.
+     * @return The generated Band.
+     */
+    protected Band generateBand(long id, Liszt<Artist> members, Liszt<User> fans, Subscription subscription) {
+        return new Band(id, "Band "+id, "Description "+id,
+                _contactInfo[_random.nextInt(_contactInfo.length)], new Liszt<>(new Album[]{_albums[_random.nextInt(_albums.length)]}),
+                randomizeRatings(), new Liszt<>(), new Liszt<>(), new Liszt<>(), subscription, new Liszt<>(),
+                members, "Gear "+id,fans, new Liszt<>(), LocalDateTime.now()
+        );
     }
 
     /**

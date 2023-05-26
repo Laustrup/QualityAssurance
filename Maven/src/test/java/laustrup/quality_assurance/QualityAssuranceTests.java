@@ -1,6 +1,9 @@
 package laustrup.quality_assurance;
 
+import laustrup.models.users.sub_users.bands.Artist;
+import laustrup.models.users.sub_users.bands.Band;
 import laustrup.quality_assurance.inheritances.items.TestItems;
+
 import org.junit.jupiter.api.Test;
 
 import static laustrup.quality_assurance.inheritances.aaa.assertions.AssertionFailer.failing;
@@ -44,14 +47,32 @@ public class QualityAssuranceTests extends Tester<TestItems> {
         });
     }
 
-    //TODO Won't change values with TestItem's resetItems(), but they are also set to null before setup.
+    @Test
+    void bandsAndArtistsWillNotCreateStackOverflow() {
+        test(() -> {
+            arrange();
+
+            try {
+                for (Band band : _items.get_bands())
+                    for (Artist member : band.get_members())
+                        for (Band b : member.get_bands())
+                            for (Artist m : band.get_members())
+                                if (m.get_bands().contains(band))
+                                    throw new StackOverflowError();
+            } catch (StackOverflowError e) {
+                failing("Bands and Artists will create a stackOverflow...",e);
+            } catch (Exception e) {
+                failing("Exception found in testing for stackOverflow of Artists and Band", e);
+            }
+        });
+    }
+
     @Test
     void canResetItems() {
         test(() -> {
             try {
                 TestItems before = arrange(() -> _items);
 
-//                act(() -> _items.resetItems());
                 act(this::resetItems);
 
                 if (!compare(before,_items))
