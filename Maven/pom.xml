@@ -4,7 +4,7 @@
 
   <groupId>laustrup</groupId>
   <artifactId>quality-assurance</artifactId>
-  <version>2023.2.02</version>
+  <version>2023.3.01</version>
   <description>
     This project contains the JUnit testing tools created by Laustrup.
     Arrange, Act and Assert are the methods mainly used in this project.
@@ -18,7 +18,7 @@
     including the test directory:
     https://maven.apache.org/plugins/maven-jar-plugin/examples/create-test-jar.html
 
-    Java 18 or higher is required.
+    Uses Java 18.
   </description>
   <packaging>jar</packaging>
 
@@ -46,7 +46,7 @@
     <dependency>
       <groupId>laustrup</groupId>
       <artifactId>utilities</artifactId>
-      <version>0.1.1-SNAPSHOT</version>
+      <version>2023.1.02</version>
     </dependency>
 
     <!-- Testing -->

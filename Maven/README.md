@@ -1,16 +1,14 @@
 # Quality Assurance for Java Maven classes
 
 Class attributes are starting with _ as a syntax and enums with uppercase spelling.
-
-Java 18 or higher is required.
+Uses Java 18.
 
 ### These classes can be used to improve the testing experience of JUnit with:
 
 * The Laustrup Printer utility displaying
   * The items of ARRANGE
   * Performance of ACT
-* More clean AAA code
-* Superclasses implemented for Bandwich models (can also be chosen to be without, which is recommended for non Bandwich projects)
+* More clean AAA code, though the algorithms would be needed to understand.
 * Attributes available:
   * _random, which is a simple Random for generating random values
   * _password, which is a password, that will be generated at each beforeEach
@@ -26,7 +24,22 @@ Firstly, the class used for the testing, needs to extend the Tester class
 
 The T is the return type.
 
-Now Tester's methods, superclasses such as Arranger, Actor and Asserter is available for use.
+Now Tester's methods as well as superclasses such as Arranger, Actor and Asserter are available for use.
+
+There is a @beforeEach method that are regenerating values such as _password.
+In order to have another @beforeEach annotated method, the TestEditor interface will be needed to be implemented in the constructor, here is an example:
+
+```
+public TestConstructor() {
+    _editor = new TestEditor() {
+        @Override
+        public void beforeEach() {
+            // Algorithm
+            ...
+        }
+    };
+}
+```
 
 Lambda functions are used to include Suppliers, Runnables and Functions in each step, the method itself needs to be as a lambda function.
 

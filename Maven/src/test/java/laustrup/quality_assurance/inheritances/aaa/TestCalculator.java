@@ -30,6 +30,7 @@ public abstract class TestCalculator {
      * @return The duration of the performance in milliseconds
      */
     long calculatePerformance() {
+        // TODO Needs scenario where _start is null, so act can be performed in arrange.
         long performance = Duration.between(_start, LocalDateTime.now()).toMillis();
         _start = null;
         return performance;

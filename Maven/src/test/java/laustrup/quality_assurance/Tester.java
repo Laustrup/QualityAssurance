@@ -1,13 +1,10 @@
 package laustrup.quality_assurance;
 
-import laustrup.quality_assurance.inheritances.items.TestItems;
-import laustrup.utilities.collections.lists.Liszt;
 import laustrup.utilities.console.Printer;
 import laustrup.services.RandomCreatorService;
 import laustrup.quality_assurance.inheritances.aaa.assertions.Asserter;
 
-import lombok.Setter;
-
+import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.util.Random;
@@ -22,14 +19,14 @@ import static laustrup.quality_assurance.inheritances.aaa.assertions.AssertionFa
  * along with other attributes such as expected, a random and other.
  * @param <T> The return type.
  */
+@NoArgsConstructor
 public abstract class Tester<T> extends Asserter<T> {
 
     /**
-     * In case testItems should create inheritances beforeEach, this should be true.
-     * If this project isn't a Bandwich project, it is recommended to be false.
+     * An interface to implement in constructor.
+     * Can continue the before each method.
      */
-    @Setter
-    private boolean _createTestItems = true;
+    protected TestEditor _editor;
 
     /** The object that is to be expected to be asserted as the same as the actual. */
     protected Object _expected;
@@ -45,12 +42,6 @@ public abstract class Tester<T> extends Asserter<T> {
 
     /** Is used when there should be tested a specific index of a collection from a function. */
     protected int _index;
-
-    /**
-     * Contains different generated inheritances to use for testing.
-     * Are being reset for each method.
-     */
-    protected TestItems _items;
 
     /** A default password, with the purpose of creating, logging in and various alike features. */
     protected String _password = RandomCreatorService.get_instance().generatePassword();
@@ -77,64 +68,36 @@ public abstract class Tester<T> extends Asserter<T> {
      */
     protected Object _adding;
 
-    /** Default constructor, will generate testItems. */
-    protected Tester() {}
-
     /**
-     * Custom constructor, that only will construct Bandwich testItems, if input is true.
-     * Is only recommended, if the project is using Bandwich models.
-     * @param createTestItems Will generate testItem for each beforeEach.
-     */
-    protected Tester(boolean createTestItems) {
-        _createTestItems = createTestItems;
-    }
-
-    /**
-     * Custom constructor, that only will construct Bandwich testItems, if input is true.
-     * Is only recommended, if the project is using Bandwich models.
-     * @param createTestItems Will generate testItem for each beforeEach.
+     * Starts the tester with some adding for custom use.
+     * They are reinitialized with each before each.
      * @param adding The adding that will be reused for tests.
      */
-    protected Tester(boolean createTestItems, Object adding) {
-        _createTestItems = createTestItems;
+    protected Tester(Object adding) { _adding = adding; }
+
+    /**
+     * Starts the tester with some adding and addings for custom use.
+     * They are reinitialized with each before each.
+     * @param adding The adding that will be reused for tests.
+     * @param addings The addings that will be reused for tests.
+     */
+    public Tester(Object[] addings, Object adding) {
+        _addings = addings;
         _adding = adding;
     }
 
+    /** This is the override of the JUnit @BeforeEach. */
     @BeforeEach
-    void beforeEach() {
+    protected void beforeEach() {
         _password = RandomCreatorService.get_instance().generatePassword();
         _expected = new String();
         _actual = new String();
 
+        _adding = "Default";
         _addings = new Object[3];
-        Liszt<Integer> indexes = new Liszt<>();
 
-        if (_createTestItems) {
-            if (_items == null)
-                _items = new TestItems();
-            else
-                _items.resetItems();
-
-            for (int i = 0; i < _addings.length; i++) {
-                int index;
-
-                do {
-                    index = _random.nextInt(_items.get_artistAmount());
-                } while (indexes.contains(index));
-                indexes.add(index);
-
-                _addings[i] = _items.get_artists()[index];
-            }
-
-            _adding = _items.get_artists()[_random.nextInt(_items.get_artistAmount())];
-        } else {
-            _items = null;
-            _adding = 1;
-
-            for (int i = 0; i < _addings.length; i++) {
-                _addings[i] = i+2;
-            }
-        }
+        if (_editor != null)
+            _editor.beforeEach();
     }
 
     /**
@@ -171,7 +134,4 @@ public abstract class Tester<T> extends Asserter<T> {
             throw e;
         }
     }
-
-    /** Will set the TestItems into a new initiate. */
-    public void resetItems() { _items = new TestItems(); }
 }
