@@ -4,10 +4,10 @@
 
   <groupId>laustrup</groupId>
   <artifactId>quality-assurance</artifactId>
-  <version>2023.3.01</version>
+  <version>2024.1.0</version>
   <description>
     This project contains the JUnit testing tools created by Laustrup.
-    Arrange, Act and Assert are the methods mainly used in this project.
+    Arrange and Act are the methods mainly used in this project.
 
     Check the instructions on how to use it by reading the README.md here:
     https://github.com/Laustrup/QualityAssurance/tree/master/Maven
@@ -17,14 +17,13 @@
     directions given at Maven, in order to install the package
     including the test directory:
     https://maven.apache.org/plugins/maven-jar-plugin/examples/create-test-jar.html
-
-    Uses Java 18.
   </description>
   <packaging>jar</packaging>
 
   <properties>
-    <maven.compiler.source>18</maven.compiler.source>
-    <maven.compiler.target>18</maven.compiler.target>
+    <java.version>18</java.version>
+    <maven.compiler.source>${java.version}</maven.compiler.source>
+    <maven.compiler.target>${java.version}</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
@@ -38,11 +37,6 @@
 
   <dependencies>
     <!-- Laustrup -->
-    <dependency>
-      <groupId>laustrup</groupId>
-      <artifactId>bandwich-models</artifactId>
-      <version>0.1.0-SNAPSHOT</version>
-    </dependency>
     <dependency>
       <groupId>laustrup</groupId>
       <artifactId>utilities</artifactId>

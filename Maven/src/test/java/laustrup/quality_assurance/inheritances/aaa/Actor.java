@@ -23,7 +23,8 @@ public abstract class Actor<T> extends Arranger<T> {
      * @return The generated output.
      */
     private String generateActualPrint() {
-        return "The acting performance" + Printer.get_instance().measurePerformance(_performance);
+        new Printer();
+        return "The acting performance " + Printer.get_instance().measurePerformance(_performance);
     }
 
     /**

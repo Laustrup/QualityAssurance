@@ -61,12 +61,12 @@ void canTest() {
     
     T actual = act(() -> increment(input));
     
-    asserting(expected, actual);
-    
     return TestMessage.SUCCESS.get_content();
   });
 }
 ```
+
+Before the return, it would be a good idea to assert your objects.
 
 It is possible, but not needed, for the callable input in the test method to make a return as a TestMessage enum,
 if it is not a SUCCESS enum, it will fail the test with the message given to the specific enum or a different return as a String,
